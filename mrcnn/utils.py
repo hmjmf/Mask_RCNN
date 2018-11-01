@@ -17,7 +17,11 @@ import scipy
 import skimage.color
 import skimage.io
 import skimage.transform
-import urllib.request
+import sys
+if sys.version[0] == '3':
+  import urllib.request
+else:
+  import urllib2
 import shutil
 import warnings
 from distutils.version import LooseVersion
@@ -842,7 +846,7 @@ def download_trained_weights(coco_model_path, verbose=1):
     """
     if verbose > 0:
         print("Downloading pretrained model to " + coco_model_path + " ...")
-    with urllib.request.urlopen(COCO_MODEL_URL) as resp, open(coco_model_path, 'wb') as out:
+    with urllib2.urlopen(COCO_MODEL_URL) as resp, open(coco_model_path, 'wb') as out:
         shutil.copyfileobj(resp, out)
     if verbose > 0:
         print("... done downloading pretrained model!")
@@ -860,7 +864,7 @@ def norm_boxes(boxes, shape):
         [N, (y1, x1, y2, x2)] in normalized coordinates
     """
     h, w = shape
-    scale = np.array([h - 1, w - 1, h - 1, w - 1])
+    scale = np.array([h - 1, w - 1, h - 1, w - 1],np.float32)
     shift = np.array([0, 0, 1, 1])
     return np.divide((boxes - shift), scale).astype(np.float32)
 
