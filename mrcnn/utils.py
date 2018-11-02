@@ -1,3 +1,4 @@
+from __future__ import division
 """
 Mask R-CNN
 Common utility functions and classes.
@@ -28,6 +29,15 @@ from distutils.version import LooseVersion
 
 # URL from which to download the latest COCO trained weights
 COCO_MODEL_URL = "https://github.com/matterport/Mask_RCNN/releases/download/v2.0/mask_rcnn_coco.h5"
+
+
+def fullmatch(regex, string, flags=0):
+    import re
+    if sys.version[0] == '3':
+        return re.fullmatch(regex, string, flags=0)
+    else:
+        return re.match("(?:" + regex + r")\Z", string, flags=flags)
+
 
 
 ############################################################
